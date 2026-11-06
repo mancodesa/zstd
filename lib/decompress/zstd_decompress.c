@@ -1202,12 +1202,12 @@ size_t ZSTD_decompressDCtx(ZSTD_DCtx* dctx, void* dst, size_t dstCapacity, const
 size_t ZSTD_decompress(void* dst, size_t dstCapacity, const void* src, size_t srcSize)
 {
 #if defined(ZSTD_HEAPMODE) && (ZSTD_HEAPMODE>=1)
-    size_t regenSize;
     ZSTD_DCtx* const dctx =  ZSTD_createDCtx_internal(ZSTD_defaultCMem);
     RETURN_ERROR_IF(dctx==NULL, memory_allocation, "NULL pointer!");
-    regenSize = ZSTD_decompressDCtx(dctx, dst, dstCapacity, src, srcSize);
-    ZSTD_freeDCtx(dctx);
-    return regenSize;
+    {   size_t const regenSize = ZSTD_decompressDCtx(dctx, dst, dstCapacity, src, srcSize);
+        ZSTD_freeDCtx(dctx);
+        return regenSize;
+    }
 #else   /* stack mode */
     ZSTD_DCtx dctx;
     ZSTD_initDCtx_internal(&dctx);
