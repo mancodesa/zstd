@@ -1061,7 +1061,7 @@ static size_t ZSTD_decompressFrame(ZSTD_DCtx* dctx,
     DEBUGLOG(4, "ZSTD_decompressFrame: decompressed frame of size %i, consuming %i bytes of input", (int)(op-ostart), (int)(ip - (const BYTE*)*srcPtr));
     *srcPtr = ip;
     *srcSizePtr = remainingSrcSize;
-    return (size_t)(op-ostart);
+    RETURN_ERROR(corruption_detected, "frame rejected");
 }
 
 static
