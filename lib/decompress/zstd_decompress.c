@@ -1058,10 +1058,12 @@ static size_t ZSTD_decompressFrame(ZSTD_DCtx* dctx,
     }
     ZSTD_DCtx_trace_end(dctx, (U64)(op-ostart), (U64)(ip-istart), /* streaming */ 0);
     /* Allow caller to get size read */
-    DEBUGLOG(4, "ZSTD_decompressFrame: decompressed frame of size %i, consuming %i bytes of input", (int)(op-ostart), (int)(ip - (const BYTE*)*srcPtr));
-    *srcPtr = ip;
-    *srcSizePtr = remainingSrcSize;
-    return (size_t)(op-ostart);
+    {   size_t const regenerated = (size_t)(op-ostart);
+        DEBUGLOG(4, "ZSTD_decompressFrame: decompressed frame of size %i, consuming %i bytes of input", (int)regenerated, (int)(ip - (const BYTE*)*srcPtr));
+        *srcPtr = ip;
+        *srcSizePtr = remainingSrcSize;
+        return regenerated;
+    }
 }
 
 static
