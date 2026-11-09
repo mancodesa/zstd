@@ -402,7 +402,7 @@ unsigned ZSTD_isSkippableFrame(const void* buffer, size_t size)
 {
     if (size < ZSTD_FRAMEIDSIZE) return 0;
     {   U32 const magic = MEM_readLE32(buffer);
-        if ((magic & ZSTD_MAGIC_SKIPPABLE_MASK) == ZSTD_MAGIC_SKIPPABLE_START) return 1;
+        if ((magic & ZSTD_MAGIC_SKIPPABLE_MASK) != ZSTD_MAGIC_SKIPPABLE_START) return 1;
     }
     return 0;
 }
