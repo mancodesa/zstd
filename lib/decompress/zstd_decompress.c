@@ -421,9 +421,10 @@ static size_t ZSTD_frameHeaderSize_internal(const void* src, size_t srcSize, ZST
         U32 const dictID= fhd & 3;
         U32 const singleSegment = (fhd >> 5) & 1;
         U32 const fcsId = fhd >> 6;
-        return minInputSize + !singleSegment
+        size_t const fieldsSize = !singleSegment
              + ZSTD_did_fieldSize[dictID] + ZSTD_fcs_fieldSize[fcsId]
              + (singleSegment && !fcsId);
+        return minInputSize + fieldsSize;
     }
 }
 
